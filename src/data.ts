@@ -208,6 +208,7 @@ export interface CatalogProduct {
   oem: string;
   position: string;
   crossNumbers: string[];
+  description: string;
   donor: DonorInfo | null;
 }
 

@@ -34,18 +34,15 @@ export function ProductPage({ productId, onNavigate }: ProductPageProps) {
     .slice(0, 4);
 
   const infoRows = [
-    product.oem && { label: 'OEM номер', value: product.oem, icon: <Hash size={15} /> },
+    product.oem && { label: 'Номер детали', value: product.oem, icon: <Hash size={15} /> },
     product.condition && { label: 'Состояние', value: product.condition, icon: <Tag size={15} /> },
-    product.model && { label: 'Модель', value: `${product.brand} ${product.model}`, icon: <Car size={15} /> },
-    product.year && { label: 'Год', value: product.year, icon: <Gauge size={15} /> },
+    product.year && { label: 'Год выпуска', value: product.year, icon: <Gauge size={15} /> },
     product.color && { 
       label: 'Цвет', 
       value: product.color, 
       icon: <Palette size={15} />,
       colorCircle: true 
     },
-    product.engine && { label: 'Двигатель', value: product.engine, icon: <Wrench size={15} /> },
-    product.body && { label: 'Кузов', value: product.body, icon: <Car size={15} /> },
   ].filter(Boolean) as any[];
 
   const getColorHex = (colorName: string) => {
@@ -212,17 +209,29 @@ export function ProductPage({ productId, onNavigate }: ProductPageProps) {
               </div>
             )}
 
+            {/* Description / Commentary */}
+            {product.description && (
+              <div className="bg-white border border-slate-100 rounded-2xl overflow-hidden">
+                <div className="px-5 py-3 border-b border-slate-100">
+                  <h3 className="font-semibold text-slate-900 text-[14px] uppercase tracking-wide">Описание и применяемость</h3>
+                </div>
+                <div className="p-6 text-base md:text-lg text-slate-700 leading-relaxed whitespace-pre-line font-medium">
+                  {product.description}
+                </div>
+              </div>
+            )}
+
             {/* Cross-numbers */}
             {product.crossNumbers && product.crossNumbers.length > 0 && (
               <div className="bg-white border border-slate-100 rounded-2xl overflow-hidden">
                 <div className="px-5 py-3 border-b border-slate-100 flex items-center justify-between">
-                  <h3 className="font-semibold text-slate-900 text-[14px] uppercase tracking-wide">Кросс-номера / Аналоги</h3>
+                  <h3 className="font-semibold text-slate-900 text-[14px] uppercase tracking-wide">Кросс-номера / Маркировки</h3>
                   <span className="text-[11px] text-slate-400 bg-slate-50 px-2 py-0.5 rounded-md font-medium">{product.crossNumbers.length}</span>
                 </div>
                 <div className="p-5">
                   <div className="flex flex-wrap gap-2">
                     {product.crossNumbers.map((num, i) => (
-                      <span key={i} className="px-3 py-1.5 bg-slate-50 text-slate-700 rounded-xl text-[13px] font-mono border border-slate-100 hover:border-blue-200 hover:text-blue-600 transition-colors cursor-default">
+                      <span key={i} className="px-3 py-1.5 bg-slate-50 text-slate-700 rounded-xl text-[13px] font-mono border border-slate-100">
                         {num}
                       </span>
                     ))}
@@ -235,31 +244,18 @@ export function ProductPage({ productId, onNavigate }: ProductPageProps) {
             {product.donor && (
               <div className="bg-white border border-slate-100 rounded-2xl overflow-hidden">
                 <div className="px-5 py-3 border-b border-slate-100">
-                  <h3 className="font-semibold text-slate-900 text-[14px] uppercase tracking-wide">Снято с автомобиля (Донор)</h3>
+                  <h3 className="font-semibold text-slate-900 text-[14px] uppercase tracking-wide">Информация о доноре</h3>
                 </div>
                 <div className="grid grid-cols-2 text-[13px]">
                   {[
                     ['Марка / Модель', `${product.donor.brand} ${product.donor.model}`],
                     ['Год выпуска', product.donor.year],
-                    ['Кузов', product.donor.body],
-                    ['Двигатель', product.donor.engine],
-                    ['КПП / Трансмиссия', product.donor.transmission],
-                    ['Тип привода', product.donor.drive],
                     ['Реальный пробег', product.donor.mileage ? `${Number(product.donor.mileage).toLocaleString('ru-RU')} км` : 'Не указан'],
-                    ['Цвет кузова', product.donor.color],
                     ['VIN номер', <span className="font-mono text-[12px]">{product.donor.vin}</span>],
                   ].filter(([, v]) => v).map(([label, value], idx) => (
                     <div key={idx} className={`flex items-center gap-4 px-5 py-3 hover:bg-slate-50 transition-colors ${idx % 2 === 0 ? 'border-r border-slate-100' : ''}`}>
                       <span className="text-slate-500 whitespace-nowrap shrink-0">{label}</span>
-                      <div className="flex items-center gap-2">
-                        {label.includes('Цвет') && getColorHex(String(value)) && (
-                          <span 
-                            className="w-3.5 h-3.5 rounded-full border border-slate-200 shadow-sm" 
-                            style={{ backgroundColor: getColorHex(String(value)) || undefined }}
-                          />
-                        )}
-                        <span className="text-slate-800 font-semibold">{value}</span>
-                      </div>
+                      <span className="text-slate-800 font-semibold">{value}</span>
                     </div>
                   ))}
                 </div>

@@ -180,10 +180,10 @@ const catalog = products
   .filter(p => p.imageUrl)
   .map(({ id, sku, title, brand, model, year, body, engine, imageUrl, color,
           conditionRaw, condition, isNew, price, priceFormatted, outOfStock,
-          categoryId, donorId, oem, position, donor }) =>
+          categoryId, donorId, oem, position, donor, description }) =>
     ({ id, sku, title, brand, model, year, body, engine, imageUrl, color,
        conditionRaw, condition, isNew, price, priceFormatted, outOfStock,
-       categoryId, donorId, oem, position, donor })
+       categoryId, donorId, oem, position, donor, description })
   );
 
 mkdirSync(join(root, 'src/generated'), { recursive: true });
