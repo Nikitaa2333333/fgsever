@@ -207,6 +207,7 @@ export interface CatalogProduct {
   categoryId: string;
   oem: string;
   position: string;
+  crossNumbers: string[];
   donor: DonorInfo | null;
 }
 

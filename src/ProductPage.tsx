@@ -177,30 +177,61 @@ export function ProductPage({ productId, onNavigate }: ProductPageProps) {
               </div>
             )}
 
-            {/* Donor info */}
+            {/* Cross-numbers */}
+            {product.crossNumbers && product.crossNumbers.length > 0 && (
+              <div className="bg-white border border-slate-100 rounded-2xl overflow-hidden">
+                <div className="px-5 py-3 border-b border-slate-100 flex items-center justify-between">
+                  <h3 className="font-semibold text-slate-900 text-[14px] uppercase tracking-wide">Кросс-номера / Аналоги</h3>
+                  <span className="text-[11px] text-slate-400 bg-slate-50 px-2 py-0.5 rounded-md font-medium">{product.crossNumbers.length}</span>
+                </div>
+                <div className="p-5">
+                  <div className="flex flex-wrap gap-2">
+                    {product.crossNumbers.map((num, i) => (
+                      <span key={i} className="px-3 py-1.5 bg-slate-50 text-slate-700 rounded-xl text-[13px] font-mono border border-slate-100 hover:border-blue-200 hover:text-blue-600 transition-colors cursor-default">
+                        {num}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Donor info / Compatibility */}
             {product.donor && (
               <div className="bg-white border border-slate-100 rounded-2xl overflow-hidden">
                 <div className="px-5 py-3 border-b border-slate-100">
-                  <h3 className="font-semibold text-slate-900 text-[14px] uppercase tracking-wide">Донор</h3>
+                  <h3 className="font-semibold text-slate-900 text-[14px] uppercase tracking-wide">Снято с автомобиля (Донор)</h3>
                 </div>
                 <div className="grid grid-cols-2 text-[13px]">
                   {[
-                    ['Марка', `${product.donor.brand} ${product.donor.model}`],
-                    ['Год', product.donor.year],
+                    ['Марка / Модель', `${product.donor.brand} ${product.donor.model}`],
+                    ['Год выпуска', product.donor.year],
                     ['Кузов', product.donor.body],
                     ['Двигатель', product.donor.engine],
-                    ['КПП', product.donor.transmission],
-                    ['Привод', product.donor.drive],
-                    ['Пробег', product.donor.mileage ? `${Number(product.donor.mileage).toLocaleString('ru-RU')} км` : ''],
-                    ['Цвет', product.donor.color],
-                    ['VIN', product.donor.vin],
+                    ['КПП / Трансмиссия', product.donor.transmission],
+                    ['Тип привода', product.donor.drive],
+                    ['Реальный пробег', product.donor.mileage ? `${Number(product.donor.mileage).toLocaleString('ru-RU')} км` : 'Не указан'],
+                    ['Цвет кузова', product.donor.color],
+                    ['VIN номер', <span className="font-mono text-[12px]">{product.donor.vin}</span>],
                   ].filter(([, v]) => v).map(([label, value], idx) => (
-                    <div key={label} className={`flex items-center gap-4 px-5 py-2.5 hover:bg-slate-50 transition-colors ${idx % 2 === 0 ? 'border-r border-slate-100' : ''}`}>
+                    <div key={idx} className={`flex items-center gap-4 px-5 py-3 hover:bg-slate-50 transition-colors ${idx % 2 === 0 ? 'border-r border-slate-100' : ''}`}>
                       <span className="text-slate-500 whitespace-nowrap shrink-0">{label}</span>
-                      <span className="text-slate-800 font-medium">{value}</span>
+                      <span className="text-slate-800 font-semibold">{value}</span>
                     </div>
                   ))}
                 </div>
+                {product.donor.video && (
+                  <div className="px-5 py-4 border-t border-slate-100 bg-slate-50/50">
+                    <a 
+                      href={product.donor.video} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-center gap-2 w-full py-2.5 bg-red-50 hover:bg-red-100 text-red-600 rounded-xl text-[13px] font-semibold transition-colors border border-red-100"
+                    >
+                      Смотреть видео работы
+                    </a>
+                  </div>
+                )}
               </div>
             )}
           </div>
